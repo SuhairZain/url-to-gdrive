@@ -25,6 +25,13 @@ class App extends React.Component {
             color: '#FFFFFF',
             fontSize: '3em'
         },
+        inputAndButton: {
+            display: 'flex',
+            width: '100%'
+        },
+        input: {
+            flexGrow: 1
+        },
         footer: {
             backgroundColor: '#d32f2f',
             display: 'flex',
@@ -47,9 +54,11 @@ class App extends React.Component {
         return (
             <div style={this.styles.root}>
                 <div style={this.styles.content}>
-                    <span style={this.styles.title}>Upload from a Url to Google Drive</span>
-                    <div id="save-drive-button"></div>
-                    <input onChange={this.handleUrlChange}/>
+                    <span style={this.styles.title}>Upload from a Url to your Google Drive</span>
+                    <div style={this.styles.inputAndButton}>
+                        <input onChange={this.handleUrlChange} style={this.styles.input}/>
+                        <div id="save-drive-button"></div>
+                    </div>
                 </div>
                 <div style={this.styles.footer}>
                     <a style={this.styles.footerLink} href="https://github.com/SuhairZain">Source</a>
