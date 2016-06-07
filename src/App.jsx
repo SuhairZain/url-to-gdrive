@@ -42,12 +42,20 @@ class App extends React.Component {
         }
     };
 
-    handleUrlChange = (evt) => {
+    renderButton = (url) => {
         gapi.savetodrive.render('save-drive-button', {
-            src: 'https://cors-anywhere.herokuapp.com/' + evt.target.value,
+            src: 'https://sz-node-proxy.herokuapp.com/' + url,
             filename: 'My Statement.pdf',
             sitename: 'My Company Name'
         });
+    };
+
+    componentDidMount = () => {
+        this.renderButton('http://s3.amazonaws.com/akamai.netstorage/HD_downloads/earth_night_rotate_1080.mov');
+    };
+
+    handleUrlChange = (evt) => {
+        this.renderButton(evt.target.value);
     };
 
     render() {
