@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack",
-    "serve": "webpack-dev-server",
+    "serve": "webpack-dev-server --inline",
     "prod": "PROD_ENV=1 webpack"
   },
   "dependencies": {
