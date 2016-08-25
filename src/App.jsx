@@ -152,7 +152,7 @@ class App extends React.Component {
                     <div id="save-drive-button"></div>
                 </div>
                 <div style={this.styles.footer}>
-                    <a style={this.styles.footerLink} href="https://github.com/SuhairZain">Source</a>
+                    <a style={this.styles.footerLink} href="https://github.com/SuhairZain/url-to-gdrive">Source</a>
                     <a style={this.styles.footerLink} href="http://superuser.com/a/740154">Inspiration</a>
                 </div>
             </div>
