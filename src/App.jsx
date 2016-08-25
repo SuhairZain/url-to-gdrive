@@ -77,11 +77,7 @@ class App extends React.Component {
         return !(new RegExp('/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/').test(url))
     };
 
-    renderButton = (proxy) => {
-        const {url, name} = this.state;
-        if(proxy===undefined)
-            proxy = this.state.proxy;
-
+    renderButton = (url, name, proxy) => {
         if(this.validUrl(url)) {
             gapi.savetodrive.render('save-drive-button', {
                 src: proxy?'https://sz-node-proxy.herokuapp.com/' + url: url,
@@ -94,7 +90,8 @@ class App extends React.Component {
     };
 
     componentDidMount = () => {
-        this.renderButton();
+        const {url, name, proxy} = this.state;
+        this.renderButton(url, name, proxy);
     };
 
     getNameFromUrl = (url) => {
@@ -103,30 +100,33 @@ class App extends React.Component {
 
     handleUrlChange = (evt) => {
         const url = evt.target.value;
+        const proxy = this.state.proxy;
 
+        const name = this.validUrl(url)?this.getNameFromUrl(url):'INVALID URL';
         this.setState({
             ...this.state,
             url: url,
-            name: this.validUrl(url)?this.getNameFromUrl(url):'INVALID URL'
+            name: name
         });
-        this.renderButton(url)
+        this.renderButton(url, name, proxy)
     };
 
     onFileNameChange = (evt) => {
+        const {url, proxy} = this.state;
         this.setState({
             ...this.state,
             name: evt.target.value
         });
-        this.renderButton()
+        this.renderButton(url, evt.target.value, proxy)
     };
 
     onProxyChange = () => {
-        const proxy = this.state.proxy;
+        const {url, name, proxy} = this.state;
         this.setState({
             ...this.state,
             proxy: !proxy
         });
-        this.renderButton(!proxy)
+        this.renderButton(url, name, !proxy)
     };
 
     render() {
