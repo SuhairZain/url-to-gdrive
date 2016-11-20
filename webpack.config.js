@@ -34,7 +34,7 @@ module.exports = {
     entry: './src/main.jsx',
     output: {
         path: "./dist",
-        publicPath: '/dist/',
+        publicPath: './dist/',
         filename: `bundle_${Date.now()}.js`
     },
     module: {
