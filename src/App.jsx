@@ -75,7 +75,7 @@ class App extends React.Component {
         this.state = {
             url: url,
             name: this.getNameFromUrl(url),
-            proxy: 'https://sz-node-proxy.herokuapp.com/',
+            proxy: 'https://sz-node-proxy.herokuapp.com/{url}',
             useProxy: false
         }
     }
@@ -88,7 +88,7 @@ class App extends React.Component {
         if(this.validUrl(url)) {
             //noinspection JSUnresolvedVariable
             gapi.savetodrive.render('save-drive-button', {
-                src: useProxy? proxy + url : url,
+                src: useProxy? proxy.replace('{url}', url) : url,
                 filename: name,
                 sitename: 'SZ - URL to GDrive'
             });
