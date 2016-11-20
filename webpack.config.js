@@ -3,10 +3,17 @@
  */
 
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var PROD = JSON.parse(process.env.PROD_ENV || '0');
 
-var plugins = [];
+var plugins = [
+    new HtmlWebpackPlugin({
+        title: "URL to GDrive",
+        filename: '../index.html',
+        template: 'index-file-template.ejs'
+    })
+];
 
 if(PROD){
     plugins.push(
@@ -28,7 +35,7 @@ module.exports = {
     output: {
         path: "./dist",
         publicPath: '/dist/',
-        filename: 'bundle.js'
+        filename: `bundle_${Date.now()}.js`
     },
     module: {
         loaders: [
