@@ -148,28 +148,29 @@ class App extends React.Component {
     };
 
     render() {
-        console.log(this.state.useProxy);
+        const {url, name, useProxy, proxy} = this.state;
+
         return (
             <div style={this.styles.root}>
                 <div style={this.styles.content}>
                     <span style={this.styles.title}>Upload from a Url to your Google Drive</span>
                     <div style={this.styles.fields}>
-                        <input value={this.state.url} onChange={this.handleUrlChange}/>
+                        <input value={url} onChange={this.handleUrlChange}/>
                         <div style={this.styles.nameAndProxy}>
                             <input
-                                value={this.state.name}
+                                value={name}
                                 onChange={this.onFileNameChange} style={this.styles.nameInput}/>
                             <div style={this.styles.useProxy}>
                                 <input
                                     type="checkbox"
                                     onChange={this.onUseProxyChange}
-                                    checked={this.state.useProxy}/>
+                                    checked={useProxy}/>
                                 <span>Use proxy. Use this option on fail.</span>
                             </div>
                         </div>
-                        <div style={{...this.styles.proxy, opacity: this.state.useProxy ? 1 : 0}}>
+                        <div style={{...this.styles.proxy, opacity: useProxy ? 1 : 0}}>
                             <input
-                                value={this.state.proxy}
+                                value={proxy}
                                 onChange={this.onProxyChange}/>
                         </div>
                     </div>
