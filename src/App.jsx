@@ -44,12 +44,18 @@ class App extends React.Component {
             marginRight: 4,
             width: '50%'
         },
-        proxy: {
+        useProxy: {
             alignItems: 'center',
             backgroundColor: '#fff',
             display: 'flex',
             marginLeft: 4,
             width: '50%'
+        },
+        proxy: {
+            backgroundColor: '#fff',
+            display: 'flex',
+            flexDirection: 'column',
+            marginBottom: 8
         },
         footer: {
             backgroundColor: '#d32f2f',
@@ -69,7 +75,8 @@ class App extends React.Component {
         this.state = {
             url: url,
             name: this.getNameFromUrl(url),
-            proxy: false
+            proxy: 'https://sz-node-proxy.herokuapp.com/',
+            useProxy: false
         }
     }
 
@@ -77,10 +84,11 @@ class App extends React.Component {
         return !(new RegExp('/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/').test(url))
     };
 
-    renderButton = (url, name, proxy) => {
+    renderButton = (url, name, proxy, useProxy) => {
         if(this.validUrl(url)) {
+            //noinspection JSUnresolvedVariable
             gapi.savetodrive.render('save-drive-button', {
-                src: proxy?'https://sz-node-proxy.herokuapp.com/' + url: url,
+                src: useProxy? proxy + url : url,
                 filename: name,
                 sitename: 'SZ - URL to GDrive'
             });
@@ -90,8 +98,8 @@ class App extends React.Component {
     };
 
     componentDidMount = () => {
-        const {url, name, proxy} = this.state;
-        this.renderButton(url, name, proxy);
+        const {url, name, proxy, useProxy} = this.state;
+        this.renderButton(url, name, proxy, useProxy);
     };
 
     getNameFromUrl = (url) => {
@@ -100,7 +108,7 @@ class App extends React.Component {
 
     handleUrlChange = (evt) => {
         const url = evt.target.value;
-        const proxy = this.state.proxy;
+        const {proxy, useProxy} = this.state;
 
         const name = this.validUrl(url)?this.getNameFromUrl(url):'INVALID URL';
         this.setState({
@@ -108,28 +116,39 @@ class App extends React.Component {
             url: url,
             name: name
         });
-        this.renderButton(url, name, proxy)
+        this.renderButton(url, name, proxy, useProxy)
     };
 
     onFileNameChange = (evt) => {
-        const {url, proxy} = this.state;
+        const {url, proxy, useProxy} = this.state;
         this.setState({
             ...this.state,
             name: evt.target.value
         });
-        this.renderButton(url, evt.target.value, proxy)
+        this.renderButton(url, evt.target.value, proxy, useProxy)
     };
 
-    onProxyChange = () => {
-        const {url, name, proxy} = this.state;
+    onProxyChange = (e) => {
+        const proxy = e.target.value;
+        const {url, name, useProxy} = this.state;
         this.setState({
             ...this.state,
-            proxy: !proxy
+            proxy
         });
-        this.renderButton(url, name, !proxy)
+        this.renderButton(url, name, proxy, useProxy)
+    };
+
+    onUseProxyChange = () => {
+        const {url, name, proxy, useProxy} = this.state;
+        this.setState({
+            ...this.state,
+            useProxy: !useProxy
+        });
+        this.renderButton(url, name, proxy, !useProxy)
     };
 
     render() {
+        console.log(this.state.useProxy);
         return (
             <div style={this.styles.root}>
                 <div style={this.styles.content}>
@@ -140,13 +159,18 @@ class App extends React.Component {
                             <input
                                 value={this.state.name}
                                 onChange={this.onFileNameChange} style={this.styles.nameInput}/>
-                            <div style={this.styles.proxy}>
+                            <div style={this.styles.useProxy}>
                                 <input
                                     type="checkbox"
-                                    onChange={this.onProxyChange}
-                                    checked={this.state.proxy}/>
+                                    onChange={this.onUseProxyChange}
+                                    checked={this.state.useProxy}/>
                                 <span>Use proxy. Use this option on fail.</span>
                             </div>
+                        </div>
+                        <div style={{...this.styles.proxy, opacity: this.state.useProxy ? 1 : 0}}>
+                            <input
+                                value={this.state.proxy}
+                                onChange={this.onProxyChange}/>
                         </div>
                     </div>
                     <div id="save-drive-button"></div>
